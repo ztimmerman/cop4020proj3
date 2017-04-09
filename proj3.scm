@@ -1,3 +1,21 @@
+(define read3items
+  (lambda (n l)
+    (cond ((= n 0) (begin
+                    (display "\nInput ID: ")
+                    (read3items 1 (list (read-line)))
+                    ))
+          ((= n 1) (begin
+                    (display "\nInput Name: ")
+                    (read3items 2 (list (car l) (read-line)))
+                    ))
+          ((= n 2) (begin
+                    (display "\nInput Grade: ")
+                    (list (car l) (car(cdr l)) (read-line))
+                    ))
+    )
+  )
+)
+
 (define performtask
   (lambda (n roster)
     (cond ((= n 0) (begin
@@ -18,11 +36,13 @@
                     ))
           ((= n 4) (begin
                     (display "\n\tPrinting list.\n")
+                    (display roster)
+                    (newline)
                     (menu roster)
                     ))
           ((= n 5) (begin
                     (display "\n\tAdding a student to roster.\n")
-                    (menu roster)
+                    (menu (cons (read3items 0 '()) roster))
                     ))
           ((= n 6) (begin
                     (display "\n\tRemoving a student from the roster.\n")
@@ -31,6 +51,12 @@
           ((= n 7) (begin
                     (display "\n\tNow exiting!\n")
                     #t
+                    ))
+          (else    (begin
+                    (display "\n\tInvalid input. Your input, ")
+                    (display n)
+                    (display ", does not exist for this menu.\n")
+                    (menu roster)
                     ))
     )
   )
