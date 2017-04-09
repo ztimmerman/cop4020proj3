@@ -8,6 +8,26 @@
                     (display "\n\tNow loading roster.\n")
                     (menu roster)
                     ))
+          ((= n 2) (begin
+                    (display "\n\tNow storing roster.\n")
+                    (menu roster)
+                    ))
+          ((= n 3) (begin
+                    (display "\n\tDisplaying Roster by ID.\n")
+                    (menu roster)
+                    ))
+          ((= n 4) (begin
+                    (display "\n\tPrinting list.\n")
+                    (menu roster)
+                    ))
+          ((= n 5) (begin
+                    (display "\n\tAdding a student to roster.\n")
+                    (menu roster)
+                    ))
+          ((= n 6) (begin
+                    (display "\n\tRemoving a student from the roster.\n")
+                    (menu roster)
+                    ))
           ((= n 7) (begin
                     (display "\n\tNow exiting!\n")
                     #t
