@@ -1,3 +1,44 @@
+(define read3items
+  (lambda (n l)
+    (cond ((= n 0) (begin
+                    (display "\nInput ID: ")
+                    (read3items 1 (list (read-line)))
+                    ))
+          ((= n 1) (begin
+                    (display "\nInput Name: ")
+                    (read3items 2 (list (car l) (read-line)))
+                    ))
+          ((= n 2) (begin
+                    (display "\nInput Grade: ")
+                    (list (car l) (car(cdr l)) (read-line))
+                    ))
+    )
+  )
+)
+
+(define removeElement
+  (lambda (h tail)
+    (begin
+      (display "\nWhich student do you want to remove from the")
+      (display "roster?\n>>")
+      (list(removeElementInner(read-line h tail)))
+    )
+  )
+)
+
+
+(define removeElementInner
+  (lambda (s h tail)
+    (cond ((equal? s (car (cdr h))) (begin
+                              (tail)
+                              ))
+          ((else)             (begin
+                              (cons h (removeElement s (car tail) (cdr tail)))
+                              ))
+    )
+  )
+)
+
 (define performtask
   (lambda (n roster)
     (cond ((= n 0) (begin
@@ -8,9 +49,36 @@
                     (display "\n\tNow loading roster.\n")
                     (menu roster)
                     ))
+          ((= n 2) (begin
+                    (display "\n\tNow storing roster.\n")
+                    (menu roster)
+                    ))
+          ((= n 3) (begin
+                    (display "\n\tDisplaying Roster by ID.\n")
+                    (menu roster)
+                    ))
+          ((= n 4) (begin
+                    (display "\n\tPrinting list.\n")
+                    (display roster)
+                    (newline)
+                    (menu roster)
+                    ))
+          ((= n 5) (begin
+                    (display "\n\tAdding a student to roster.\n")
+                    (menu (cons (read3items 0 '()) roster))
+                    ))
+          ((= n 6) (begin
+                    (menu (removeElementInner "Zachary" (car roster) (cdr roster)))
+                    ))
           ((= n 7) (begin
                     (display "\n\tNow exiting!\n")
                     #t
+                    ))
+          (else    (begin
+                    (display "\n\tInvalid input. Your input, ")
+                    (display n)
+                    (display ", does not exist for this menu.\n")
+                    (menu roster)
                     ))
     )
   )
