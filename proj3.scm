@@ -1,3 +1,5 @@
+;Timmerman 4/12/16 Prog Lang Proj. 3
+
 (define read3items
   (lambda (n l)
     (cond ((= n 0) (begin
