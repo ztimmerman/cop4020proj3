@@ -16,25 +16,82 @@
   )
 )
 
-(define removeElement
-  (lambda (h tail)
+(define smallest
+  (lambda (roster min)
+    (cond
+      ((equal? roster '()) min)
+      ((< (string->number (car (car roster))) (string->number (car min)))
+        (smallest (cdr roster) (car roster)))
+      (else
+        (smallest (cdr roster) min))
+    )
+  )
+)
+
+(define sortRemove
+  (lambda (roster victim)
+    (cond ((null? roster) '())
+      ((equal? (car (car roster)) (car victim)) (cdr roster))
+      (else (cons (car roster) (sortRemove (cdr roster) victim)))
+    )
+  )
+)
+
+(define selectSort
+  (lambda (roster)
     (begin
-      (display "\nWhich student do you want to remove from the")
-      (display "roster?\n>>")
-      (list(removeElementInner(read-line h tail)))
+      (cond ((null? roster) '())
+            (else (cons (smallest roster (car roster))
+                (selectSort (sortRemove roster (smallest roster (car roster)))))
+            )
+      )
+    )
+  )
+)
+
+(define loadFromFile
+  (lambda (roster)
+    (begin
+      (define in (open-input-file "my_data.txt"))
+      (define my_new_roster (read in))
+      (close-input-port in)
+      my_new_roster
     )
   )
 )
 
 
+(define saveToFile
+  (lambda (roster)
+    (begin
+      (define out (open-output-file "my_data.txt"))
+      (write roster out)
+      (close-output-port out)
+      roster
+    )
+  )
+)
+
+
+(define removeElement
+  (lambda (h tail)
+    (begin
+      (display "\nWhich student do you want to remove from the")
+      (display "roster?\n>>")
+      (removeElementInner (read-line) h tail)
+    )
+  )
+)
+
+;Not working for now.
 (define removeElementInner
   (lambda (s h tail)
-    (cond ((equal? s (car (cdr h))) (begin
-                              (tail)
-                              ))
-          ((else)             (begin
-                              (cons h (removeElement s (car tail) (cdr tail)))
-                              ))
+    (begin
+      (display s)
+      (if (null tail) (begin
+                              (display "ERR: name doesn't exist.\n")
+                              ('())))
+      (if (equal? s (car (cdr h))) tail (removeElementInner s (car tail) (cdr tail)))
     )
   )
 )
@@ -47,14 +104,16 @@
                     ))
           ((= n 1) (begin
                     (display "\n\tNow loading roster.\n")
-                    (menu roster)
+                    (menu (loadFromFile roster))
                     ))
           ((= n 2) (begin
                     (display "\n\tNow storing roster.\n")
-                    (menu roster)
+                    (menu (saveToFile roster))
                     ))
           ((= n 3) (begin
                     (display "\n\tDisplaying Roster by ID.\n")
+                    (display (selectSort roster))
+                    (newline)
                     (menu roster)
                     ))
           ((= n 4) (begin
@@ -68,7 +127,7 @@
                     (menu (cons (read3items 0 '()) roster))
                     ))
           ((= n 6) (begin
-                    (menu (removeElementInner "Zachary" (car roster) (cdr roster)))
+                    (menu (removeElement (car roster) (cdr roster)))
                     ))
           ((= n 7) (begin
                     (display "\n\tNow exiting!\n")
