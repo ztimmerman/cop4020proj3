@@ -87,11 +87,13 @@
 (define removeElementInner
   (lambda (s h tail)
     (begin
-      (display s)
-      (if (null tail) (begin
+;      (display s)
+      (if (equal? tail '()) (begin
                               (display "ERR: name doesn't exist.\n")
-                              ('())))
-      (if (equal? s (car (cdr h))) tail (removeElementInner s (car tail) (cdr tail)))
+                              '()))
+      (if (equal? s (car (cdr h))) tail
+          (cons h (removeElementInner s (car tail) (cdr tail)))
+      )
     )
   )
 )
